@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+
+        :root {
+            --opacitance: 0;
+        }
+        body {
+            overflow: hidden;
+        }
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Lato", sans-serif;
+            font-weight: normal;
+        }
+        h1, button {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-weight: normal;
+        }
+        h2 {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-weight: normal;
+        }
+        body {
+            padding: 0 0;
+            margin: 0px 0px;
+        }
+        .fullWidth {
+            width: 100%;
+        }
+        .xlarge {
+            font-size: 80px;
+        }
+        .large {
+            font-size: 50px;
+        }
+        .head p {
+            text-align: center;
+            font-size: larger;
+        }
+        .section {
+            width: 75%;
+            height: 350px;
+            padding: 32px 128px;
+        }
+
+        .GameArea {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-color: #f3eca9;
+        }
+
+        .SignInArea {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        #username, #password {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .signInBut {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+        }
+        
+        .signInBut:hover {
+            background-color: #45a049;
+        }
+
+        .signInBut:active {
+            background-color: #3e8e41;
+            transform: scale(90%);
+        }
+
+        .responseBox {
+            position:fixed;
+            bottom: 0;
+            width: 100%;
+            height: 30px;
+            background-color: #000000;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            visibility: hidden;
+            z-index: 10;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+        }
+
+        .seven-segment {
+    display: inline-block;
+    width: 40px;
+    height: 80px;
+    margin: 0 2px;
+    background: #222;
+    position: relative;
+}
+.seven-segment span {
+    position: absolute;
+    background: #d00;
+    opacity: 0.2;
+    transition: opacity 0.2s;
+}
+.seven-segment .on {
+    opacity: 1;
+}
+.seven-segment .a { top: 5px; left: 8px; width: 24px; height: 8px; }
+.seven-segment .b { top: 13px; right: 5px; width: 8px; height: 24px; }
+.seven-segment .c { bottom: 13px; right: 5px; width: 8px; height: 24px; }
+.seven-segment .d { bottom: 5px; left: 8px; width: 24px; height: 8px; }
+.seven-segment .e { bottom: 13px; left: 5px; width: 8px; height: 24px; }
+.seven-segment .f { top: 13px; left: 5px; width: 8px; height: 24px; }
+.seven-segment .g { top: 36px; left: 8px; width: 24px; height: 8px; }
+
+.timerWrapper {
+    z-index: 1000;
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            background-color: #585858;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+            display: none;
+            height: max-content;
+        }
+
+        .hiddenCabinet1 {
+            padding-top: 7px;
+    position: absolute;
+    top: 20%;
+    left: 60%;
+    background-color: #6e4f2d;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 200px;
+    height: 75px;
+    opacity: 0;
+    transition: opacity 0.5s, height 0.3s;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.cabinetFace {
+    background-color: #b07b43;
+    height: 75px;
+    width: 100%;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 7px solid #7e5a32;
+}
+.hiddenCabinet1.open {
+    height: 200px;
+
+}
+
+.cabinetContent {
+    transition: opacity 0.5s;
+    opacity: 0;
+    background-color: #563d22;
+    height: 60%;
+    width: 80%;
+    margin-left: 10%;
+}
+.hiddenCabinet1.open .cabinetContent {
+    display: block;
+    opacity: 1;
+}
+
+.page1 {
+    background-color: #fff;
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    height: 80%;
+    width:60%;
+    margin-left: 15%;
+}
+
+.page2 {
+    background-color: #bebebe;
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    height: 90%;
+    width:60%;
+    margin-left: 20%;
+}
+
+.hiddenCabinet1:hover {
+    opacity: var(--opacitance);
+}
+        .hiddenCabinet1 .handle {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            background-color: #f3ee9f;
+            border-radius: 50%;
+            border-top: 5px solid #beb97d;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 600px) {
+            .SignInArea {
+                width: 80%;
+                padding: 10px;
+            }
+            
+        }
+
+        .instructions {
+            position: absolute;
+            right: 0%;
+            transform: translateX(90%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            height: 100%;
+            width: 250px;
+            display: none;
+            transition: transform 0.5s;
+        }
+
+        .instructions:hover {
+            transform: translateY(0%);
+            z-index: 20;
+        }
+
+.timerPanelNotch {
+    width: 40px;
+    height: 12px;
+    background: #333;
+    border-radius: 0 0 10px 10px;
+    margin: 0 auto;
+    margin-top: 8px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+}
+.timerPanel {
+    width: 90%;
+    margin: 0 auto;
+    background: #444;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(.4,0,.2,1), padding 0.3s;
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.timerPanel.open {
+    max-height: 80px;
+    padding: 20px 10px;
+}
+.panelBtn {
+    background: #ff6e6e;
+    border: none;
+    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 45%;
+    border-top: 4px solid #974747;
+        transition: all 0.1s;
+}
+.panelBtn:active {
+    transform: scale(90%);
+    border-top-width: 1px;
+}
+
+.panel {
+    background-color: #414141;
+    border-radius: 10px;
+    padding: 10px;
+}   
+
+.panel .screen {
+    width: 215px;
+    background-color: #2e3927;
+    height: 50px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    color:#9eff61;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+        .panel .codeButton {
+            width: 60px;
+            height: 60px;
+            background-color: #aaaf4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .panel .codeButton:hover {
+            background-color: #a09e45;
+        }
+
+        .panel .codeButton:active {
+            background-color: #8e823e;
+            transform: scale(90%);
+        }
+
+.panelRevealContainer {
+    position: absolute;
+    top: 20%;
+    right: 10%;
+    width: fit-content;
+    margin: 0 auto;
+}
+.panelCover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f3eca9; /* Match your page background */
+    z-index: 2;
+    transition: transform 0.7s cubic-bezier(.4,0,.2,1);
+    border-radius: 10px;
+}
+.panelCover.revealed {
+    transform: translateY(-110%);
+}
+
+.levercover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f3eca9; /* Match your page background */
+    z-index: 2;
+    transition: transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+.levercover.revealed {
+    transform: translateX(-110%);
+}
+
+.levercontainer {
+    position: absolute;
+    bottom: 30px;
+    left: 2.5%;
+    width: 350px;
+    height: 155px;
+    background-color: #646464;
+    padding: 10px 20px;
+}
+
+.lever {
+    border-top: #333 solid 10px;
+    height: 90%;
+    width: 45%;
+    border-bottom: #333 solid 10px;
+    border-left: 20px solid #fe5454;
+    border-right: #b3b1b1 ridge 30px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: all 0.1s;
+}
+
+.lever.pulled {
+        transform-origin:right;
+    transform: rotate3d(0, 1, 0, -180deg);
+     translate: -31% 0;
+}
+
+.switchescontainer {
+    position: absolute;
+    top: 10px;
+    left: 2.5%;
+    width: 375px;
+    height: 200px;
+    background-color: #646464;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.switches {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    background-color: #464646;
+    border-radius: 2px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+.switch {
+    width: 35px;
+    height: 90px;
+    background-color: #aaa;
+    border: 2px solid #888;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-top: #6fd9f9 outset 15px;
+}
+
+
+.switch.up {
+    border-bottom: #6fd9f9 outset 15px;
+    border-top: none;
+
+}
+
+.switchScreen {
+    width: 100%;
+    background-color: #2e3927;
+    height: 50px;
+    border-radius: 2px;
+    margin-top: 10px;
+    color:#9eff61;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+    font-family: 'Courier New', Courier, monospace;}
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+</head>
+<body>
+    <div class="GameArea">
+        <div class="SignInArea">
+            <h1>Welcome to Sai.co</h1>
+            <h2>Sign In</h2>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <br>
+                <button class="signInBut" type="submit" onclick="document.getElementsByClassName('responseBox')[0].style.visibility = 'visible';handleSignInClick()">Sign In</button>
+            <footer>
+                <p style="color: #808088;; font-size: small;">&copy; 2023 Sai.co. All rights reserved.</p>
+            </footer>
+        </div>
+        <div class="responseBox">
+            <h4>
+            </h4>
+        </div>
+        <div class="timerWrapper">
+    <h3 style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;color: #fff">Too many incorrect Attempts. <br>Commencing Self Destruction</h3>
+    <div id="seven-segment-timer" style="background-color: #222;">
+        <div class="seven-segment" id="digit1"></div>
+        <div class="seven-segment" id="digit2"></div>
+        <span style="font-size:48px;vertical-align:top;">:</span>
+        <div class="seven-segment" id="digit3"></div>
+        <div class="seven-segment" id="digit4"></div>
+    </div>
+    <!-- Panel Notch and Slide Panel -->
+    <div class="timerPanelNotch" id="timerPanelNotch" style="transform: translateY(250%); width: 150px"></div>
+    <div class="timerPanel" id="timerPanel">
+        <button class="panelBtn" id="panelBtn1"></button>
+        <button class="panelBtn" id="panelBtn2" style="background-color: #65e569;border-top-color: #3e8e41;"></button>
+    </div>
+</div>
+<div class="hiddenCabinet1">
+    <div class="cabinetContent" style="display:none;">
+        <div style="height:75px;background-color:#563d22;border-bottom: 2px solid #000;"></div>
+        <div class="page2"></div>
+        <div class="page1" onclick="dockPage()">
+           <h2> HOW TO DIFFUSE 
+            <br>
+            A
+            </h2>
+        </div>
+    </div>
+    <div class="cabinetFace">
+    <div class="handle"></div>
+    </div>
+</div>
+    <div class="instructions">
+        <h2>Instructions</h2>
+        <p>follow these steps:</p>
+        <ol>
+            <li>Press Green button 4 times</li>
+            <li>Type in 4176599377747739 into the panel</li>
+            <li>When there is a 3 in any position on the timer, Flick the lever</li>
+            <li>Flick the switches in this pattern: up:down:up:up:up:down</li>
+            <li>If the button says ABORT, then click it when there is a 5 on the timer</li>
+            <li>If the button says INERT, then click it when there is a 6 on the timer</li>
+            </ol>
+        <p style="margin-top: 50%;">Sai.co, all rights reserved</p>
+    </div>
+<div class="panelRevealContainer">
+    <div class="panelCover"></div>
+    <div class="panel" id="panel">
+        <div class="screen"></div>
+        <button class="codeButton">1</button>
+        <button class="codeButton">2</button>
+        <button class="codeButton">3</button>
+        <br>
+        <button class="codeButton">4</button>
+        <button class="codeButton">5</button>
+        <button class="codeButton">6</button>
+        <br>
+        <button class="codeButton">7</button>
+        <button class="codeButton">8</button>
+        <button class="codeButton">9</button>
+        <br>
+        <button class="codeButton">ENTER</button>
+        <button class="codeButton">0</button>
+        <button class="codeButton">RESET</button>
+    </div>
+</div>
+<div class="switchescontainer">
+    <div class="switches">
+        <div class="switch" id="switch1"></div>
+        <div class="switch" id="switch2"></div>
+        <div class="switch" id="switch3"></div>
+        <div class="switch" id="switch4"></div>
+        <div class="switch" id="switch5"></div>
+    </div>
+    <div class="switchScreen">
+        PANEL INACTIVE
+    </div>
+</div>
+<div class="levercontainer">
+    <div class="levercover"></div>
+    <div class="lever pulled" id="lever">
+    </div>
+</div>
+</body>
+
+<script>
+    const responseList = ['hey, what are you doing here?',
+        'I am not sure if you should be here.',
+        'I think you should leave.',
+        'don\'t you have something better to do?',
+        'you dont wanna know what happens if you stay here.',
+        'so you arent leaving huh?',
+        'I guess you are not scared of me.',
+        'well, I am not scared of you either.',
+        'and i challenge you',
+        'there are 50 endings to this game.',
+        'and you have to find them all.',
+        'thats everything i know.',
+        'I dont know what happens if you find them all.',
+        'why are you still clicking?',
+        'the button is not going to do anything.',
+        'wait why is it warming up?',
+        'what is happening?',
+        '',
+        'oh no, this is not good.',
+        'this is not good at all.',
+        'there has to be a way to stop this.',
+        'im pretty sure there is a cabinet somewhere in this page.',
+        'and it has bomb diffusal instructions.',
+    ];
+
+    const diffusalDialogue = [
+        'oh no oh no OH NO',
+        'So these are my last moments huh?',
+        'I guess I should have been more careful.',
+        'I shouldnt have agreed to this job.',
+        'Sai.co makes useless products anyway.',
+        'START DOING SOMETHING',
+        'WHAT ARE YOU DOING',
+        'YOU HAVE TO DIFFUSE THE BOMB',
+        'i have to help my wife, who\'s sick........ when i get one',
+        'I have a cat though mr. whiskers. PLEASE SAVE ME',
+        'I DONT WANT TO DIE',
+        'You\'re the worst person for this job',
+        'this is all your fault',
+        'I should have never trusted you',
+        'I hope you know im not attending your funeral',
+        'I WILL FIND YOU IN HELL AND I WILL [redacted]',
+    ];
+    let responseIndex = 0;
+    let clicks = 0;
+    function nextDialogue() {
+        if (responseIndex > 12 && clicks < 50) {
+            const responseBox = document.getElementsByClassName('responseBox')[0];
+            responseBox.style.visibility = 'hidden';
+            return;
+        } 
+        else if (clicks > 60) 
+        {
+            const responseBox = document.getElementsByClassName('responseBox')[0];
+            const randomIndex = Math.floor(Math.random() * diffusalDialogue.length);
+            responseBox.innerHTML = diffusalDialogue[randomIndex];
+            responseBox.style.visibility = 'visible';
+            if (countdown > 0)  {
+            setInterval(nextDialogue, 7000);
+            };
+        }
+        else 
+        {
+            const responseBox = document.getElementsByClassName('responseBox')[0];
+            responseBox.innerHTML = responseList[responseIndex];
+            responseBox.style.visibility = 'visible';
+            responseIndex++;
+        }
+    }
+
+    const cabinet = document.getElementsByClassName('hiddenCabinet1')[0];
+const handle = document.getElementsByClassName('handle')[0];
+let isCabinetVisible = false;
+let isDragging = false;
+let dragStartY = 0;
+
+handle.addEventListener('click', function(e) {
+    if (!isCabinetVisible) {
+        cabinet.style.opacity = '1';
+        isCabinetVisible = true;
+    }
+});
+
+// Drag to open
+handle.addEventListener('mousedown', function(e) {
+    if (!isCabinetVisible) return;
+    isDragging = true;
+    dragStartY = e.clientY;
+    document.body.style.userSelect = 'none';
+});
+
+
+
+document.addEventListener('mousemove', function(e) {
+    if (isDragging && isCabinetVisible) {
+        let dragDistance = e.clientY - dragStartY;
+        if (dragDistance > 40) { // Threshold to "open"
+            cabinet.classList.add('open');
+            const content = cabinet.querySelector('.cabinetContent');
+            if (content) content.style.display = 'block';
+        }
+    }
+});
+
+document.addEventListener('mouseup', function(e) {
+    isDragging = false;
+    document.body.style.userSelect = '';
+});
+
+
+    function updateButtonColor() {
+        const button = document.getElementsByClassName('signInBut')[0];
+        if (clicks > 50) {
+            // Gradually increase red, max at 255
+            let red = Math.min(255, 100 + (clicks - 50) * 16);
+            // Optionally decrease green/blue for a warmer look
+            let green = Math.max(0, 76 - (clicks - 50) * 3);
+            let blue = Math.max(0, 80 - (clicks - 50) * 3);
+            button.style.backgroundColor = `rgb(${red},${green},${blue})`;
+        } else {
+            // Reset to original color
+            button.style.backgroundColor = "#4CAF50";
+        }
+    }
+
+    function handleSignInClick() {
+        clicks++;
+                if (clicks < 62) {
+            nextDialogue();
+        }
+        if (clicks == 55) {
+            // Start countdown
+            const timerWrapper = document.getElementsByClassName('timerWrapper')[0];
+            timerWrapper.style.display = 'block';
+            updateTimer();
+        }
+        if (clicks > 50) {
+            var r = document.querySelector(':root');
+            r.style.setProperty('--opacitance', '0.5');
+        }
+        updateButtonColor();
+    }
+
+    const digitSegments = [
+    [1,1,1,1,1,1,0], // 0
+    [0,1,1,0,0,0,0], // 1
+    [1,1,0,1,1,0,1], // 2
+    [1,1,1,1,0,0,1], // 3
+    [0,1,1,0,0,1,1], // 4
+    [1,0,1,1,0,1,1], // 5
+    [1,0,1,1,1,1,1], // 6
+    [1,1,1,0,0,0,0], // 7
+    [1,1,1,1,1,1,1], // 8
+    [1,1,1,1,0,1,1], // 9
+];
+
+function createSegments(element) {
+    const segNames = ['a','b','c','d','e','f','g'];
+    segNames.forEach(name => {
+        const span = document.createElement('span');
+        span.className = name;
+        element.appendChild(span);
+    });
+}
+
+function setDigit(element, num) {
+    const segs = element.querySelectorAll('span');
+    digitSegments[num].forEach((on, i) => {
+        if (on) segs[i].classList.add('on');
+        else segs[i].classList.remove('on');
+    });
+}
+
+// Initialize segments
+['digit1','digit2','digit3','digit4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.children.length === 0) createSegments(el);
+});
+
+// Countdown logic
+// Set initial countdown time (in seconds)
+let bombTick = new Audio('sounds/bomb_Tick.mp4');
+let countdown = 180; // seconds
+function updateTimer() {
+    let min = Math.floor(countdown / 60);
+    let sec = countdown % 60;
+    setDigit(document.getElementById('digit1'), Math.floor(min/10));
+    setDigit(document.getElementById('digit2'), min%10);
+    setDigit(document.getElementById('digit3'), Math.floor(sec/10));
+    setDigit(document.getElementById('digit4'), sec%10);
+    bombTick.play();
+    if (countdown > 0) {
+        countdown--;
+        setTimeout(updateTimer, 1000);
+    }
+    else {
+        // Trigger bomb explosion
+        const timerWrapper = document.getElementsByClassName('timerWrapper')[0];
+        timerWrapper.innerHTML = "<h1 style='color: red;'>BOOM!</h1>";
+        timerWrapper.style.backgroundColor = "#ff0000";
+        timerWrapper.style.color = "#fff";
+        timerWrapper.style.fontSize = "50px";
+        timerWrapper.style.textAlign = "center";
+        timerWrapper.style.paddingTop = "100px";
+    }
+}
+
+    // Make the DIV element draggable:
+dragElement(document.getElementsByClassName("timerWrapper")[0]);
+
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+function dockPage() {
+    const page1 = document.getElementsByClassName('page1')[0];
+    const instructions = document.getElementsByClassName('instructions')[0];
+    const cabinet = document.getElementsByClassName('hiddenCabinet1')[0];
+    const content = cabinet.querySelector('.cabinetContent');
+    setTimeout(function () {
+        content.style.display = 'none'}
+        , 180);
+    cabinet.classList.remove('open');
+    page1.style.display = 'none';
+    instructions.style.display = 'block';
+    setTimeout(function () {
+        cabinet.style.opacity = '0';
+    }, 100);
+    setTimeout(function () {
+        cabinet.style.display = 'none';
+    }, 300);
+}
+
+const timerPanelNotch = document.getElementById('timerPanelNotch');
+const timerPanel = document.getElementById('timerPanel');
+
+timerPanelNotch.addEventListener('click', function() {
+    timerPanel.classList.toggle('open');
+    if (timerPanel.classList.contains('open')) {
+        timerPanelNotch.style.transform = 'translateY(1000%)';
+    } else {
+        timerPanelNotch.style.transform = 'translateY(250%)';
+    }
+});
+let c = 0;
+document.getElementById('panelBtn2').addEventListener('click', function() {
+    c++;
+    if (c == 4) {
+        document.querySelector('.panelCover').classList.add('revealed');
+    }
+});
+
+const screen = document.querySelector('.panel .screen');
+const codeButtons = document.querySelectorAll('.panel .codeButton');
+
+codeButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+        const value = btn.textContent;
+        if (value === 'RESET') {
+            screen.textContent = '';
+        } else if (value === 'ENTER') {
+            if (screen.textContent === '4176599377747739') {
+                screen.style.backgroundColor= '#00cc00';
+                document.querySelector('.levercover').classList.add('revealed');
+            } else {
+                screen.style.backgroundColor = '#cc0000';
+                screen.textContent = '';
+                setTimeout(() => {
+                    screen.style.backgroundColor = '';
+                }, 500);
+            }
+        } else {
+            screen.textContent += value;
+        }
+    });
+});
+
+document.getElementById('lever').addEventListener('click', function() {
+    const lever = document.getElementById('lever');
+    lever.classList.toggle('pulled');
+    if (countdown.contains('3'))    {
+        document.getElementsByClassName('switchScreen')[0].textContent = 'PANEL ACTIVE';
+    }
+});
+
+document.querySelectorAll('.switch').forEach(switchEl => {
+    switchEl.addEventListener('click', function() {
+        switchEl.classList.toggle('up');
+    });
+});
+</script>
+</html>
