@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>SlidingGames</title>
+
+<style>
+body,h1,h3,h4,h5,h6 {font-family: "Lato", sans-serif;font-weight: normal;}
+h1,button {font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: normal;}
+h2  {
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: normal;
+}
+body  {
+  padding: 0 0;
+  margin: 0px 0px;
+}
+.fullWidth  {
+  width: 100%;
+}
+.xlarge {
+  font-size: 80px;
+}
+
+.large {
+  font-size: 50px;
+}
+
+.head {
+  height: 450px;
+  background-image: url("/images/BlueBackground.jpg");
+  display: grid;
+  place-content: center;
+  color: #fff;
+}
+
+.head p {
+  text-align: center;
+  font-size: larger;
+}
+
+.section {
+  width: 75%;
+  height: 350px;
+  padding: 32px 128px;
+}
+
+.navPane  {
+  position: sticky;
+  top: 0;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+  height: 50px;
+  background-color: rgb(43, 208, 230);
+  display: flex;
+}
+
+.navPaneItem {
+  height: 100%;
+  width: 150px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+
+}
+
+.playBut  {
+  margin-left: 40px;
+  width: 250px;
+  height: 30px;
+  background-color: #fff;
+  border: 5px solid rgb(137, 172, 184);
+  border-top-width: 2px;
+  border-left-width: 2px;
+  border-radius: 10px;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  padding-top: 10px;
+  letter-spacing: 3px;
+  color: rgb(137, 172, 184);
+  font-weight: bold;
+}
+.letter {
+  display: inline-block;
+  letter-spacing: -0.1em;
+  animation: sineWave 2s ease-in-out infinite;
+  transform: 0;
+}
+
+.letter:nth-child(1) { animation-delay: 0s; }
+.letter:nth-child(2) { animation-delay: 0.1s; }
+.letter:nth-child(3) { animation-delay: 0.2s; }
+.letter:nth-child(4) { animation-delay: 0.3s; }
+.letter:nth-child(5) { animation-delay: 0.4s; }
+.letter:nth-child(6) { animation-delay: 0.5s; }
+.letter:nth-child(7) { animation-delay: 0.6s; }
+.letter:nth-child(8) { animation-delay: 0.1s; }
+.letter:nth-child(9) { animation-delay: 0.2s; }
+.letter:nth-child(10) { animation-delay: 0.3s; }
+.letter:nth-child(11) { animation-delay: 0.4s; }
+.letter:nth-child(12) { animation-delay: 0.5s; }
+.letter:nth-child(13) { animation-delay: 0.6s; }
+</style>
+
+<style>
+  @keyframes sineWave {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+</style>
+</head>
+<body class="fullWidth">
+
+<div class="navPane">
+  <div style="background-color: #fff;" class="navPaneItem">
+  <a href="HomePage.html" style="color: black;text-decoration: none;font-size: 20px;">Home</a>
+  </div>
+  <div style="background-color:rgb(224, 251, 255);" class="navPaneItem">
+    <a href="" style="color: black;text-decoration: none;font-size: 20px;">Puzzles</a>
+  </div>
+  <div style="background-color: rgb(43, 208, 230);" class="navPaneItem">
+    <a href="" style="color: black;text-decoration: none;font-size: 20px;">Coming Soon!</a>
+  </div>
+  <div style="background-color:rgb(43, 208, 230);" class="navPaneItem">
+    <a href="" style="color: black;text-decoration: none;font-size: 20px;">Coming Soon!</a>
+  </div>
+  <div style="background-color:rgb(43, 208, 230);" class="navPaneItem">
+    <a href="" style="color: black;text-decoration: none;font-size: 20px;">Coming Soon!</a>
+  </div>
+</div>
+
+<header class="head">
+  <h1 class="xlarge" style="text-align: center;">
+    <span class="letter">P</span>
+    <span class="letter">u</span>
+    <span class="letter">z</span>
+    <span class="letter">z</span>
+    <span class="letter">l</span>
+    <span class="letter">e</span>
+    <br>
+    <span class="letter">G</span>
+    <span class="letter">a</span>
+    <span class="letter">m</span>
+    <span class="letter">e</span>
+    <span class="letter">s</span>
+  </h1>
+  <p><em>"random puzzles from all shapes and sizes"</em></p>
+</header>
+
+<br><br><br>
+
+<div class="fullWidth" style="background-color: rgb(215, 221, 223);">
+<div class="section">
+  <div style="display: flex;">
+    <div class="sec1Text">
+      <h2 class="large">8 puzzle</h2>
+      <br>
+      <h3>A simpler puzzle, from a simpler time. Mainly here to get you familiar with the rules. It is possible to do under 10 secnds. Are you up to that challenge?</h3>
+
+      <p style="color: rgb(100, 100, 100);">
+        Just the same old 15 puzzle but smaller. Much easier and you should be able to solve it in much less time.<br><br>
+        <span id="8Moves">
+          Best Moves............................(play some more dude!)
+        </span>
+        <br>
+        <span id="8Time">
+          Best Time............................(play some more dude!)
+        </span>
+      </p>
+    </div>
+    <a href="8Puzzle-SlidingGames.htm">
+    <button style="width: 350px;height: 350px;border: 0; background-color: rgb(215, 221, 223);"><img src="\images\8PuzzlePrev.png">
+      <h2 class="playBut">
+        PLAY
+      </h2>
+    </button>
+    </a>
+  </div>
+</div>
+</div>
+
+<br><br><br>
+
+<div class="fullWidth" style="background-color: rgb(193, 213, 219);">
+<div class="section">
+
+  <div style="display: flex;">
+    <a href="15Puzzle-SlidingGames.htm" style="height: fit-contents;">
+      <button style="width: 350px; height: 350px; background-color: rgb(193, 213, 219); border: 0;">
+        <img src="\images\15PuzzlePrev.png">
+        <h2 class="playBut">
+          PLAY
+        </h2>
+      </button>
+    </a>
+    <div class="sec2Text">
+      <h2 class="large">15 puzzle</h2>  
+      <h3>The 15 puzzle, a charming sliding puzzle all the way back from the 1880s presents a 4x4 grid with 15 numbered tiles and one empty space, where the goal is to arrange the tiles in numerical order by sliding them within the grid.</h3>
+
+      <p style="color: rgb(100, 100, 100);">Once you know the rules, you'll grow faster and more effecient. Most people can do it in under 200 moves. Can you do it in less? Challenge your friends to beat your score!<br><br>
+        <span id="15Moves">
+          Best Moves............................(play some more dude!)
+        </span>
+        <br>
+        <span id="15Time">
+          Best Time............................(play some more dude!)
+        </span>
+      </p>
+    </div>
+  </div>  
+</div>
+</div>
+
+<br><br><br>
+
+<div class="fullWidth" style="background-color: rgb(162, 194, 204);">
+<div class="section">
+
+  <div style="display: flex;">
+    <div class="sec3Text">
+      <h2 class="large">24 puzzle</h2>
+      <br>
+      <h3>The true test of a master. Its so big that the entire page layout changed! Are you brave enough to even try?</h3>
+
+      <p style="color: rgb(100, 100, 100);">I congratulate you if you can solve this in less than 2 and half minutes.Good Luck!<br><br>
+        <span id="24Moves">
+          Best Moves............................(play some more dude!)
+        </span>
+        <br>
+        <span id="24Time">
+          Best Time............................(play some more dude!)
+        </span>
+      </p>
+    </div>
+    <a href="24puzzle-SlidingGames.html">
+    <button class="fullWidth" style="width: 350px;height: 350px;background-color:  rgb(162, 194, 204);border: 0;">
+      <img src="images/24PuzzlePrev.png">
+    <h2 class="playBut">
+      PLAY
+    </h2>
+  </button>
+  </a>
+  </div>
+</div>
+</div>
+
+<br>
+<br>
+<div class="fullWidth" style="background-color: rgb(112, 112, 112); height: 200px;">
+    <h1>
+
+    </h1>
+</div>
+<br><br><br><br>
+ <p style="text-align: center; color: rgb(75, 75, 75);">Developed and Maintained by Saisaurav</p>
+</footer>
+
+<script>
+  document.getElementById("24Time").innerText = 'Best Time.....................................................' + localStorage.getItem('bestTime24');
+  document.getElementById("24Moves").innerText = 'Best Moves....................................................' + localStorage.getItem('bestTime24');
+  document.getElementById("15Time").innerText = 'Best Time.....................................................' + localStorage.getItem('bestTime15');
+  document.getElementById("15Moves").innerText = 'Best Moves....................................................' + localStorage.getItem('bestMoves15');
+  document.getElementById("8Time").innerText = 'Best Time.....................................................' + localStorage.getItem('bestTime8');
+  document.getElementById("8Moves").innerText = 'Best Moves....................................................' + localStorage.getItem('bestMoves8');
+</script>
+
+
+</body>
+</html>
