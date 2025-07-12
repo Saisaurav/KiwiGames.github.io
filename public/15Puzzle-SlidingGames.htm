@@ -681,10 +681,10 @@ document.getElementById('bestMoves').innerText = "Best Moves....................
         const end = Date.now() + 15 * 1000;
 
         function Victory()  {
-            if (localStorage.getItem('bestTime15') > seconds || localStorage.getItem('bestTime15') == 0)    {
+            if (localStorage.getItem('bestTime15') > seconds || localStorage.getItem('bestTime15') == null || localStorage.getItem('bestTime15') == 0)    {
                 localStorage.setItem('bestTime15', seconds);
             };
-            if (localStorage.getItem('bestMoves15') > document.getElementById("move").innerText || localStorage.getItem('bestMoves15') == 0)    {
+            if (localStorage.getItem('bestMoves15') > document.getElementById("move").innerText || localStorage.getItem('bestMoves15') == 0 || localStorage.getItem('bestTime15') == null)    {
                 localStorage.setItem('bestMoves15', document.getElementById("move").innerText); 
             };
             win = true;
