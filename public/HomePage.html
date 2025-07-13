@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>KiwiGames</title>
+
+<style>
+body,h1,h3,h4,h5,h6 {font-family: "Lato", sans-serif;font-weight: normal;}
+h1,button {font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-weight: normal;}
+h2  {
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: normal;
+}
+body  {
+  padding: 0 0;
+  margin: 0px 0px;
+}
+.fullWidth  {
+  width: 100%;
+}
+.xlarge {
+  font-size: 80px;
+}
+
+.large {
+  font-size: 50px;
+}
+
+.head {
+  height: 450px;
+  background-image: url("/images/GreenBackground.jpg");
+  display: grid;
+  place-content: center;
+  color: #fff;
+}
+
+.head p {
+  text-align: center;
+  font-size: larger;
+}
+
+.section {
+  width: 75%;
+  height: 350px;
+  padding: 32px 128px;
+}
+
+.navPane  {
+  position: sticky;
+  top: 0;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+  height: 50px;
+  background-color: rgb(37, 202, 125);
+  display: flex;
+}
+
+.navPaneItem {
+  height: 100%;
+  width: 150px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+
+}
+
+.letter {
+  display: inline-block;
+  letter-spacing: -0.2em;
+  animation: sineWave 2s ease-in-out infinite;
+  transform: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.letter:nth-child(1) { animation-delay: 0s; }
+.letter:nth-child(2) { animation-delay: 0s; }
+.letter:nth-child(3) { animation-delay: 0s; }
+.letter:nth-child(4) { animation-delay: 0.1s; }
+.letter:nth-child(5) { animation-delay: 0.1s; }
+.letter:nth-child(6) { animation-delay: 0.2s; }
+.letter:nth-child(7) { animation-delay: 0.2s; }
+.letter:nth-child(8) { animation-delay: 0.3s; }
+.letter:nth-child(9) { animation-delay: 0.3s; }
+.letter:nth-child(10) { animation-delay: 0s; }
+.letter:nth-child(11) { animation-delay: 0s; }
+.letter:nth-child(12) { animation-delay: 0.1s; }
+.letter:nth-child(13) { animation-delay: 0.1s; }
+.letter:nth-child(14) { animation-delay: 0.2s; }
+.letter:nth-child(15) { animation-delay: 0.2s; }
+.letter:nth-child(16) { animation-delay: 0.3s; }
+.letter:nth-child(17) { animation-delay: 0.3s; }
+.letter:nth-child(18) { animation-delay: 0.4s; }
+.letter:nth-child(19) { animation-delay: 0.4s; }
+
+.letterHover  {
+  transition-duration: 100ms;
+}
+.letterHover:hover  {
+  scale: 150%;
+  translate: -40% 0;
+}
+</style>
+
+<style>
+  @keyframes sineWave {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+</style>
+</head>
+<body class="fullWidth">
+
+<div class="navPane">
+  <div style="background-color: #fff;" class="navPaneItem">
+  <a href="" style="color: black;text-decoration: none;font-size: 20px;">Home</a>
+  </div>
+  <div style="background-color: rgb(43, 230, 155);" class="navPaneItem">
+    <a href="SlidingGames.html" style="color: black;text-decoration: none;font-size: 20px;">Puzzles</a>
+  </div>
+  <div style="background-color:rgb(43, 230, 155);;" class="navPaneItem">
+    <a href="AiGames.html" style="color: black;text-decoration: none;font-size: 20px;">"AI thinking"</a>
+  </div>
+  <div style="background-color: rgb(43, 230, 155);;" class="navPaneItem">
+    <a href="" style="color: black;text-decoration: none;font-size: 20px;">Coming Soon!</a>
+  </div>
+  <div style="background-color: rgb(43, 230, 155);;" class="navPaneItem">
+    <a href="" style="color: black;text-decoration: none;font-size: 20px;">Coming Soon!</a>
+  </div>
+</div>
+
+<header class="head">
+  <h1 class="xlarge" style="text-align: center;">
+    <span class="letter letterHover">K</span>
+    <span class="letter" style="color: rgba(0, 0, 0, 0.5);translate: -120%; z-index: 9;">K</span>
+    <span class="letter letterHover">I</span>
+    <span class="letter" style="color: rgba(0, 0, 0, 0.5);translate: -120%; z-index: 9;">I</span>
+    <span class="letter letterHover" style="translate: 40% 0%;">W</span>
+    <span class="letter" style="color: rgba(0, 0, 0, 0.5);translate: -80%; z-index: 9;">W</span>
+    <span class="letter letterHover">I</span>
+    <span class="letter" style="color: rgba(0, 0, 0, 0.5);translate: -120%; z-index: 9;">I</span>
+    <br>
+    <span class="letter letterHover">G</span>
+    <span class="letter" style="color: rgba(0, 0, 0, 0.5);translate: -120%; z-index: 9;">G</span>
+    <span class="letter letterHover">A</span>
+    <span class="letter" style="color: rgba(0, 0, 0, 0.5);translate: -120%; z-index: 9;">A</span>
+    <span class="letter letterHover" style="translate: 20% 0%;">M</span>
+    <span class="letter" style="color: rgba(0, 0, 0, 0.5);translate: -100%; z-index: 9;">M</span>
+    <span class="letter letterHover">E</span>
+    <span class="letter" style="color: rgba(0, 0, 0, 0.5);translate: -120%; z-index: 9;">E</span>
+    <span class="letter letterHover">S</span>
+    <span class="letter" style="color: rgba(0, 0, 0, 0.5);translate: -120%; z-index: 9;">S</span>
+  </h1>
+  <p><em>"cool games from all genres"</em></p>
+</header>
+
+<br><br><br>
+
+<div class="fullWidth" style="background-color: rgb(164, 246, 224);">
+<div class="section">
+  <div style="display: flex;">
+    <div class="sec1Text">
+      <h1>Welcome to KiwiGames</h1>
+      <h2>Here, you'll find a bunch of random stuff, from puzzling brainteasers to advanced AI games. A good place to be if you have some time to kill.
+      Will have regular updates!</h5>
+    </div>
+  </div>
+</div>
+</div>
+
+<br><br><br>
+
+<div class="fullWidth" style="background-color: rgb(112, 112, 112); height: 200px;">
+    <h1>
+
+    </h1>
+</div>
+<br><br><br><br>
+ <p style="text-align: center; color: rgb(75, 75, 75);">Developed and Maintained by Saisaurav</p>
+</footer>
+
+<script>
+
+</script>
+
+
+</body>
+</html>

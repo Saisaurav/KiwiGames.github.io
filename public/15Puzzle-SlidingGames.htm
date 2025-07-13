@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+        15 Puzzle
+    </title>
+    <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
+    <style>
+
+        .hoverAnim  {
+            transition-duration: 150ms;
+        }
+
+        .hoverAnim:hover    {
+            border-color: var(--secondaryCol1);
+            color: var(--secondaryCol1);
+            scale: 105%;
+        }
+
+        .clickAnim  {
+            transition-duration: 150ms;
+        }
+
+        .clickAnim:active   {
+            scale: 85%;
+        }
+
+        .fullWidth   {
+            width: 100%;
+        }
+
+        .fullHeight {
+            height: 100%;
+        }
+
+        .centerPlacement    {
+            display: grid;
+            place-content: center;
+        }
+
+        .dim-border-10r {
+            border: 6px solid #fff;
+            border-left-width: 3px;
+            border-top-width: 3px;
+            border-radius: 10px;
+        }
+
+        .dim-border-5r {
+            border: 6px solid #fff;
+            border-left-width: 3px;
+            border-top-width: 3px;
+            border-radius: 5px;
+        }
+
+        .backWhite  {
+            background-color: #fff;
+        }
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    body    {overflow-x: hidden;}
+    button  {animation: 0;cursor: pointer;}
+        :root   {
+            --primaryCol2: rgb(27, 68, 102);
+            --primaryCol1: rgb(248, 88, 88);
+            --secondaryCol1: rgb(255, 29, 123);
+            --secondaryCol2: rgb(0, 90, 163);
+        }
+        .game-body {
+            display:flex;
+        }
+        .sidebar {
+            width: 400px;
+            border-right: 5px groove var(--primaryCol2);
+            padding: 1% 1%;
+            z-index: 10;
+            transition: all 150ms ease-in-out;
+            left: 0;
+        }
+
+        .sideBar_Top {
+            height: 60px;
+            width: 95%;
+            border-color: var(--primaryCol1);
+        }
+
+        .sideBar_Top h1 {
+            font-family: "Lato", sans-serif;
+            color: var(--primaryCol1);
+        }
+
+        .sideBar_Footer {
+            padding: 10px 10px;
+            text-align: center;
+        }
+
+        .sideBar_Footer button {
+            width: 45%;
+            border-color: var(--primaryCol1);
+            font: bold 12px "Lato", sans-serif;
+            color: var(--primaryCol1);
+            letter-spacing: 3px;
+            }
+
+        .Footer-objects {
+            display: inline-block;
+            width: 23.3%;
+            height: 80px;
+            vertical-align: middle;
+            border-color: var(--secondaryCol2);
+            scale: 90%;
+            transition: scale 0.5s ease-out;
+        }
+
+        .GAME_text {
+            color: var(--secondaryCol2);
+            letter-spacing: 3px;
+            font-family: "Lato", sans-serif;
+        }
+
+        .table {
+            width: 410px;
+            height: 410px;
+            border-color: #808080;
+            padding: 10px 20px;
+        }
+        
+        .row {
+            display: flex;
+            height: 25%;
+            pointer-events: none;
+        }
+
+        .cell {
+            width: 25%;
+            border-color: var(--primaryCol2);
+            transform: translateX(0px) translateY(0px) scale(90%);
+            transition: transform 100ms ease-in-out;
+            pointer-events: all;
+        }
+
+        .cell span {
+            color: var(--primaryCol2);
+            font: italic 600 30px "Lato", sans-serif;
+        }
+
+        .boundingBox    {
+            height: 550px;
+            width: 550px;
+            border: 1px groove #808080;
+            border-radius: 5px;
+            position: fixed;
+            top: 50%;
+            left: 40%;
+            transform: translateY(-50%);
+        }
+
+        .reshuffle {
+            width: 150px;
+            height: 50px;
+            border-color: var(--secondaryCol1);
+            margin-left: 28%;
+            margin-top: 2.5%;
+            font: bold large "Varela Round";
+            color: var(--secondaryCol1);
+        }
+
+        .victory    {
+            place-content: center;
+            display: none;
+            height: 510px;
+            width: 460px;
+            background-color: rgba(255, 255, 255, 0.880);
+
+            padding: 50px 50px;
+            position: fixed;
+            left: 40%;
+            right: 40%;
+        }
+
+        .victory h3{
+            border-color: var(--secondaryCol1);
+            text-align: center;
+            width: 110%;
+            height: 40%;
+            transform: translateX(-25px) ;
+            color: var(--secondaryCol1);
+            font: bolder 50px 'Varela Round';
+        }
+
+        #gameSummary {
+            color: var(--secondaryCol2);
+            font: italic 600 23px 'Varela Round';
+        }
+
+        .letter {
+            transform: 0;
+            display: inline-block;
+            animation: sineWave 2s ease-in-out infinite;
+        }
+        .victoryButtons {
+            display: flex;
+            justify-content: center;
+            height: 80px;
+        }
+
+        .victory_button {
+            border-color: var(--primaryCol1);
+            scale: 90%;
+            font: bold 15px 'Varela Round';
+            color: var(--primaryCol1);
+            margin-top: 20px;
+        }
+
+        .gameDescr   {
+            height: 350px;
+            border-color: var(--secondaryCol2);
+            color: var(--secondaryCol2);
+            font: italic normal large "Lato", sans-serif;
+            padding: 0px 15px;
+            margin-right: 10px;
+        }
+
+        .backButtons    {
+            border: #808080 solid 2px;
+            background-color: rgb(250, 250, 250);
+            width: 175px;
+            padding: 0px 20px;
+            transition: transform 150ms ease-out;
+            position: fixed;
+            overflow-y: auto;
+  bottom: 0;
+  right: 0;
+  z-index: 11;
+
+        }
+        .SlideInWin:hover   {
+            transform: translateX(0%);
+        }
+        @media screen and (max-width: 950px) and (max-height: 550px) {
+  .sidebar {
+    transform: translateX(-95%);
+    height: fit-content;
+  }
+  .boundingBox  {
+    left: 25%;
+  }
+  .victory  {
+    left:25%;
+  }
+}
+
+        @media screen and (max-width: 1150px)   {
+            .backButtons  {
+    transform: translateX(98%);
+  } 
+        #chevron-arrow-right    {
+            display: block;
+        }
+        }
+
+        @media screen and (max-height: 550px)   {
+            .table  {
+    width: 360px;
+    height: 360px;
+  }
+}
+
+        .letter:nth-child(1) { animation-delay: 0s; }
+.letter:nth-child(2) { animation-delay: 0.1s; }
+.letter:nth-child(3) { animation-delay: 0.2s; }
+.letter:nth-child(4) { animation-delay: 0.3s; }
+.letter:nth-child(5) { animation-delay: 0.4s; }
+.letter:nth-child(6) { animation-delay: 0.5s; }
+.letter:nth-child(7) { animation-delay: 0.6s; }
+.letter:nth-child(8) { animation-delay: 0.7s; }
+    </style>
+
+    <style>
+        @keyframes click    {
+            0%  {transform: scale(100%);}
+            50%    {transform: scale(90%, 90%);}
+            100%  {transform: scale(100%);}
+        }
+        
+        @keyframes sineWave {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(15px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+    </style>
+
+</head>
+<body>
+    <div data-posx="0" data-posy="5"></div>
+    <div data-posx="1" data-posy="5"></div>
+    <div data-posx="2" data-posy="5"></div>
+    <div data-posx="3" data-posy="5"></div>
+    <div data-posx="4" data-posy="5"></div>
+    <div data-posx="5" data-posy="5"></div>
+    <div data-posy="0" data-posx="5"></div>
+    <div data-posy="1" data-posx="5"></div>
+    <div data-posy="2" data-posx="5"></div>
+    <div data-posy="3" data-posx="5"></div>
+    <div data-posy="4" data-posx="5"></div>
+    <div data-posy="5" data-posx="5"></div>
+    <div data-posx="0" data-posy="0"></div>
+    <div data-posx="1" data-posy="0"></div>
+    <div data-posx="2" data-posy="0"></div>
+    <div data-posx="3" data-posy="0"></div>
+    <div data-posx="4" data-posy="0"></div>
+    <div data-posx="5" data-posy="0"></div>
+    <div data-posy="0" data-posx="0"></div>
+    <div data-posy="1" data-posx="0"></div>
+    <div data-posy="2" data-posx="0"></div>
+    <div data-posy="3" data-posx="0"></div>
+    <div data-posy="4" data-posx="0"></div>
+    <div data-posy="5" data-posx="0"></div>
+    <div class="game-body fullWidth fullHeight">
+        <div class="sidebar fullHeight SlideInWin backWhite">
+            <div class="sideBar_Top dim-border-10r centerPlacement fullWidth">
+                <h1>
+                    15 PUZZLE
+                </h1>
+            </div>
+            <div class="sideBar_Footer ">
+                <button class="dim-border-10r fullWidth fullHeight backWhite hoverAnim clickAnim">
+                    <h2>
+                        <b>
+                            RESET
+                        </b>
+                    </h2>
+                        
+                </button>
+                <div class="Footer-objects dim-border-10r" id="Footer-obj1">
+                    <h3 class="GAME_text">
+                        TIME
+                    </h3>
+
+                    <h3 class="GAME_text" style="margin-bottom: 40px;">
+                        0s
+                    </h3>
+              
+                </div>
+                <div class="Footer-objects dim-border-10r" id="Footer-obj2">
+                    <h3 class="GAME_text">
+                        MOVES
+                    </h3>
+
+                    <h3 class="GAME_text" id="move">
+                        0
+                    </h3>
+                </div>
+                <div class="gameDescr dim-border-10r centerPlacement">
+                <h2>Medium</h2>
+                <p>
+                    Click on any of the tiles to move them. Try to get them in a numerical order from 1 to 15 starting from the top-left. Click the Reset button to reset the grid and the New button to get a new puzzle.
+                </p>
+                <h4 id="bestTime">
+                    Best Time
+                </h4>
+                <h4 id="bestMoves">
+                    Best Moves
+                </h4>
+                </div>
+            </div>
+            <button class="reshuffle dim-border-5r backWhite clickAnim" onclick="location.reload()" >
+                New
+            </button>
+        </div>
+        <div class="playArea">
+            <div class="boundingBox centerPlacement fullWidth">
+                <div class="table dim-border-10r">
+                    <div class="row fullWidth">
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="1" data-posY="1" data-index="1" onclick="moveBlock(1)" >
+                            <span id="block1">1</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="2" data-posY ="1" data-index="2" onclick="moveBlock(2)" >
+                            <span id="block2">2</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="3" data-posY="1" data-index="3" onclick="moveBlock(3)" >
+                            <span id="block3">3</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="4" data-posY="1" data-index="4" onclick="moveBlock(4)" >
+                            <span id="block4">4</span>
+                        </button>
+                    </div>
+                    <div class="row fullWidth">
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="1" data-posY="2" data-index="5" onclick="moveBlock(5)" >
+                            <span id="block5">5</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="2" data-posY="2" data-index="6" onclick="moveBlock(6)" >
+                            <span id="block6">6</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="3" data-posY="2" data-index="7" onclick="moveBlock(7)" >
+                            <span id="block7">7</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="4" data-posY="2" data-index="8" onclick="moveBlock(8)" >
+                            <span id="block8">8</span>
+                        </button>
+                    </div>
+                    <div class="row fullWidth">
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="1" data-posY="3" data-index="9" onclick="moveBlock(9)" >
+                            <span id="block9">9</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="2" data-posY="3" data-index="10" onclick="moveBlock(10)">
+                            <span id="block10">10</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="3" data-posY="3" data-index="11" onclick="moveBlock(11)" >
+                            <span id="block11">11</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="4" data-posY="3" data-index="12" onclick="moveBlock(12)" >
+                            <span id="block12">12</span>
+                        </button>
+                    </div>
+                    <div class="row fullWidth">
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="1" data-posY="4" data-index="13" onclick="moveBlock(13)" >
+                            <span id="block13">13</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="2" data-posY="4" data-index="14" onclick="moveBlock(14)" >
+                            <span id="block14">14</span>
+                        </button>
+                        <button class = "cell dim-border-5r backWhite" data-x="0" data-y="0" data-posx="3" data-posy="4" data-index="15" onclick="moveBlock(15)" >
+                            <span id="block15">15</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="victory" id="victoryWin">
+                <h3 class="dim-border-10r">
+                    <span class="letter">A</span>
+                    <span class="letter">M</span>
+                    <span class="letter">A</span>
+                    <span class="letter">Z</span>
+                    <span class="letter">I</span>
+                    <span class="letter">N</span>
+                    <span class="letter">G</span>
+                    <span class="letter">!</span>
+                </h3><br>
+                <h2 id="gameSummary">
+                    
+                </h2>
+                <div class="victoryButtons" >
+                <button class="victory_button dim-border-10r backWhite centerPlacement fullWidth clickAnim" onclick="location.reload()" style="height: 60px;" >
+                    Do Another!
+                </button>
+                <a class="victory_button dim-border-10r backWhite centerPlacement fullWidth" href="15Puzzle-SlidingGames.htm">
+                    Next Level!
+                </a>
+                </div>
+            </div>
+        </div>
+        <div class="fullHeight backButtons SlideInWin">
+            <a href="SlidingGames.html">
+                <button class="backButton fullWidth backWhite dim-border-5r clickAnim" style="margin-top: 20%;height: 20%; color: var(--secondaryCol2);border-color: var(--secondaryCol2);font: bold x-large 'Varela Round';" >
+                    Back to Home
+                </button>
+            </a>
+
+            <a href="8Puzzle-SlidingGames.htm">
+                <button class="backButton fullWidth backWhite dim-border-5r clickAnim" style="margin-top: 10%;height: 20%; color: var(--secondaryCol1);border-color: var(--secondaryCol1);font: bold x-large 'Varela Round';">
+                    Previous Level
+                </button>
+                </a>
+
+            <button class="backButton fullWidth backWhite dim-border-5r clickAnim" style="margin-top: 10%;height: 20%; color: var(--secondaryCol2);border-color: var(--secondaryCol2);font: bold x-large 'Varela Round';" onclick="localStorage.setItem('bestTime15', 0);localStorage.setItem('bestMoves15', 0);updateBestScore();">
+                Reset Highscore
+            </button>
+
+            <a href="24puzzle-SlidingGames.html">
+            <button class="backButton fullWidth backWhite dim-border-5r clickAnim" style="margin-top: 10%;height: 20%; color: var(--secondaryCol1);border-color: var(--secondaryCol1);font: bold x-large 'Varela Round';" >
+                Next Level
+            </button>
+            </a>
+        </div>
+    </div>
+    <script>
+        let win = false;
+        let seconds = 0;
+        let timerInterval;
+
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000); 
+        };
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        };
+
+        function resetTimer() {
+            stopTimer();
+            seconds = 0;
+            updateDisplay();
+        };
+
+        function updateTimer() {
+            seconds++;
+            updateDisplay();
+        };
+
+        function updateDisplay() {
+            const timerDisplay = document.getElementById('Footer-obj1').lastElementChild;
+            timerDisplay.textContent = seconds + 's';
+        };
+    </script>
+    <script>
+        function setUp()    {
+            let values = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+            let i = 1;
+            blockListX = [];
+            blockListY = [];
+            while (i < 16) {
+                let randomIndex = Math.floor(Math.random() * values.length);
+                let current = values[randomIndex];
+                document.getElementById("block" + i).textContent = current;
+                blockListX.push( document.getElementById("block" + i).parentElement.dataset.posx);
+                blockListY.push( document.getElementById("block" + i).parentElement.dataset.posy);
+                values.splice(randomIndex, 1);
+                i ++;
+            };
+        };
+        function isSolvable(puzzle) {
+            inversions = 0;
+            const gridWidth = 4;
+
+            for (let i = 0; i < puzzle.length; i++) {
+                for (let j = i + 1; j < puzzle.length; j++) {
+                    if (puzzle[i] > puzzle[j]) {
+                    inversions++;
+                    };
+                }
+            };
+
+            return inversions % 2 === 0;
+        }
+
+    </script>
+        <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+    <script>
+        function checkAroundBlock(blockAdress)  {
+            $emptyBlock = "";
+            let _xMove = 0;
+            let _yMove = 0;
+            const blockLeft = blockAdress.dataset.posx - 1;
+            const blockRight = blockAdress.dataset.posx - -1;
+            const blockUp = blockAdress.dataset.posy - 1;
+            const blockDown = blockAdress.dataset.posy - -1;
+            if (document.querySelector("[data-posx=" + CSS.escape(blockLeft) + "][data-posy=" + CSS.escape(blockAdress.dataset.posy) + "]") === null) {
+                $emptyBlock = "west";
+            }
+            else if (document.querySelector("[data-posx=" + CSS.escape(blockRight) + "][data-posy=" + CSS.escape(blockAdress.dataset.posy) + "]") === null) {
+                $emptyBlock = "east";
+            }
+            else if (document.querySelector("[data-posy=" + CSS.escape(blockUp) + "][data-posx=" + CSS.escape(blockAdress.dataset.posx) + "]") === null)    {
+                $emptyBlock = "north";
+            }
+            else if (document.querySelector("[data-posy=" + CSS.escape(blockDown) + "][data-posx=" + CSS.escape(blockAdress.dataset.posx) + "]") === null)  {
+                $emptyBlock = "south";
+            }
+            else {
+                $emptyBlock = null;
+            };
+
+            if ($emptyBlock == "west")  {
+                _xMove = -1;
+            }
+            else if ($emptyBlock == "east") {
+                _xMove = 1;
+            }
+            else if ($emptyBlock == "north")    {
+                _yMove = -1;
+            }
+            else if ($emptyBlock == "south")    {
+                _yMove = 1;
+            };
+            let Style = window.getComputedStyle(blockAdress);
+            let matrix = new WebKitCSSMatrix(Style.transform);
+            if ($emptyBlock !== null)   {
+                blockAdress.style.transform = "translateX(" + Number(Math.round((matrix.m41 + (_xMove * 100)) / 100) * 100) + '%) translateY(' + Number(Math.round((matrix.m42 + (_yMove * 100)) / 100) * 100) + "%) scale(90%)";
+                blockAdress.dataset.posx = blockAdress.dataset.posx - -_xMove;
+                blockAdress.dataset.posy = blockAdress.dataset.posy - -_yMove;
+                blockAdress.dataset.x = blockAdress.dataset.x - -_xMove;
+                blockAdress.dataset.y = blockAdress.dataset.y - -_yMove;
+            };
+           
+        };
+
+        function moveBlock(blockNumber)  {
+            const _block = document.querySelector('[data-index=' + CSS.escape(blockNumber) + ']') 
+            let $emptyBlock = "";
+            let _xMove = 0;
+            let _yMove = 0;
+            checkAroundBlock(_block);
+
+        };
+        const elements = document.querySelectorAll('.cell');
+
+        function updateDisplaymove()  {
+            if ($emptyBlock != null)    {
+                document.getElementById("move").innerText = Number(document.getElementById("move").innerText) + 1;
+                moves = document.getElementById("move").innerText;
+            };
+        };
+        function handleEvent() {
+            startTimer();
+            elements.forEach((el) => {
+                el.removeEventListener('click', handleEvent);
+            });
+            };
+        elements.forEach((element) => {
+            element.addEventListener('click', handleEvent);
+        });
+
+        elements.forEach(element => {
+            element.addEventListener('click', () => {
+            if ($emptyBlock !== null, win !== true)   {
+                updateDisplaymove()
+            }
+            });
+        });
+        function getBlockAt(DataX, DataY, k)    {
+            let selectedBlock = document.querySelector("[data-posy=" + CSS.escape(DataY) + "][data-posx=" + CSS.escape(DataX) + "]")
+            if (selectedBlock !== null)  {
+                if (selectedBlock.firstElementChild.innerHTML == k) {
+                    selectedBlock.style.borderColor = "var(--secondaryCol2)";
+                    selectedBlock.firstElementChild.style.color = "var(--secondaryCol2)";
+                    if (blockListCor.indexOf(selectedBlock.dataset.index) == -1)    {
+                        blockListCor.push(selectedBlock.dataset.index);
+                    }
+                }            
+                else    {
+                    let tempIndex = blockListCor.indexOf(selectedBlock.dataset.index);
+                    selectedBlock.style.borderColor = "var(--primaryCol2)";
+                    selectedBlock.firstElementChild.style.color = "var(--primaryCol2)";
+                    if (blockListCor.indexOf(selectedBlock.dataset.index) != -1)    {
+                        blockListCor.splice(tempIndex, 1);
+                    }
+
+                };
+            };
+
+        };
+
+        function updateBestScore()  {
+            document.getElementById('bestTime').innerText = "Best Time............................ " + localStorage.getItem('bestTime15') + ' seconds';
+document.getElementById('bestMoves').innerText = "Best Moves............................" + localStorage.getItem('bestMoves15');
+        };
+        let blockListCor = [];
+        function detectVictory()    {
+            let y = 1;
+            let k = 1;
+            while (y < 5)  {
+                let x = 1;
+                while (x < 5)   {
+                    getBlockAt(x, y, k);
+                    k ++;
+                    x ++;
+                }
+                y++;
+            };
+            if (blockListCor.length > 14)    {
+                Victory();
+        };
+
+
+        }
+
+        elements.forEach((element) => {
+            element.addEventListener('click', detectVictory);
+        });
+        const colors = ["#ADD8E6", "#0000800", "#088F8F", "#A7C7E7"];
+        const end = Date.now() + 15 * 1000;
+
+        function Victory()  {
+            if (localStorage.getItem('bestTime15') > seconds || localStorage.getItem('bestTime15') == null || localStorage.getItem('bestTime15') == 0)    {
+                localStorage.setItem('bestTime15', seconds);
+            };
+            if (localStorage.getItem('bestMoves15') > document.getElementById("move").innerText || localStorage.getItem('bestMoves15') == 0 || localStorage.getItem('bestTime15') == null)    {
+                localStorage.setItem('bestMoves15', document.getElementById("move").innerText); 
+            };
+            win = true;
+            let h = 1;
+            let p = 1;
+            let v = 0;
+            stopTimer();
+            while (h<16)    {
+                document.querySelector('[data-index=' + CSS.escape(h) + ']').onclick = null;
+                h++;
+            };
+            document.getElementById('Footer-obj1').style.scale = "95%";
+            document.getElementById('Footer-obj2').style.scale = "95%";
+            document.getElementById('gameSummary').textContent = "You Finished in " + seconds + " seconds and in " + document.getElementById("move").innerText + ' moves'
+            window.setTimeout(function()    {document.getElementById('victoryWin').style.display = "grid";}, 250);
+            const duration = 15 * 1000,
+  animationEnd = Date.now() + duration,
+  defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+function randomInRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+const interval = setInterval(function() {
+  const timeLeft = animationEnd - Date.now();
+
+  if (timeLeft <= 0) {
+    return clearInterval(interval);
+  }
+
+  const particleCount = 10 * (timeLeft / duration);
+
+  confetti(
+    Object.assign({}, defaults, {
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.2), y: Math.random() - 0.2 },
+      colors: colors,
+    })
+  );
+  confetti(
+    Object.assign({}, defaults, {
+      particleCount,
+      origin: { x: randomInRange(0.8, 0.9), y: Math.random() - 0.2 },
+      colors: colors,
+    })
+  );
+}, 250);    
+    updateBestScore();
+        };
+    </script>
+    <script>
+        updateBestScore();
+    </script>
+    <script>
+        let m = 1;
+        tableArray = [];
+        setUp();
+        while (m < 16)  {
+  
+            tableArray.push(document.getElementById('block' + m).textContent);
+            m++;
+        };
+        if (!isSolvable(tableArray))    {
+            location.reload();
+        };
+
+        function fullReset()    {
+            const elements = document.querySelectorAll('.cell');
+            let g = 1;
+            while (g < 16) {
+                let element = document.getElementById("block" + g).parentElement;
+                element.style.transform = "translateX(0px) translateY(0px) scale(90%)";
+                element.dataset.posx = blockListX[g-1];
+                element.dataset.posy = blockListY[g-1];
+                g = Number(g) + 1
+          };
+           document.getElementById('move').innerText = "0";
+           resetTimer();
+           elements.forEach((element) => {
+           element.style.borderColor = "var(--primaryCol2)";
+           element.firstElementChild.style.color = "var(--primaryCol2)";
+            element.addEventListener('click', handleEvent);
+           });
+        };
+        if (localStorage.getItem('bestTime8') === null) {
+            localStorage.setItem('bestTime8', 0)
+            localStorage.setItem('bestMoves8', 0)
+        }
+    </script>
+    </body>
+</body>
+</html>
